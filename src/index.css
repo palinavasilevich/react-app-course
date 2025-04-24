@@ -1,7 +1,9 @@
 :root {
   --main-bg-color: #23272f;
-
   --text-color: #fff;
+
+  --btn-bg-color: #383b3f;
+  --btn-text-color: #fff;
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -36,6 +38,9 @@ a {
   :root {
     --main-bg-color: #fff;
     --text-color: #000;
+
+    --btn-bg-color: #16444f;
+    --btn-text-color: #57c4dc;
   }
 }
 
@@ -43,5 +48,8 @@ a {
   :root {
     --main-bg-color: #23272f;
     --text-color: #fff;
+
+    --btn-bg-color: #383b3f;
+    --btn-text-color: #fff;
   }
 }

@@ -30,15 +30,14 @@ export default [
         "warn",
         { allowConstantExport: true },
       ],
-      "prettier/prettier": [
-        "error",
-        {
-          singleQuote: false,
-          // printWidth: 130,
-          parser: "flow",
-          tabWidth: 2,
-        },
-      ],
+      // "prettier/prettier": [
+      //   "error",
+      //   {
+      //     singleQuote: false,
+      //     // printWidth: 130,
+      //     tabWidth: 2,
+      //   },
+      // ],
     },
   },
 ];

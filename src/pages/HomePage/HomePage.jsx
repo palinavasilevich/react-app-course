@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { QuestionCard } from "../../components/QuestionCard";
-
 import { API_URL } from "../../constants";
+import { QuestionCardList } from "../../components/QuestionCardList";
 
 // import cls from "./HomePage.module.css";
 
@@ -25,10 +24,7 @@ export const HomePage = () => {
 
   return (
     <>
-      {questions.map((card) => {
-        return <QuestionCard key={card.id} card={card} />;
-      })}
-      <button onClick={() => getQuestions()}>get questions</button>
+      <QuestionCardList questions={questions} />
     </>
   );
 };

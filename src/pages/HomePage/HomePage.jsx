@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 import { API_URL } from "../../constants";
@@ -20,6 +20,16 @@ export const HomePage = () => {
     return questions;
   });
 
+  const filteredQuestions = useMemo(
+    () =>
+      questions.filter((question) =>
+        question.question
+          .toLowerCase()
+          .includes(searchValue.trim().toLocaleLowerCase())
+      ),
+    [questions, searchValue]
+  );
+
   useEffect(() => {
     getQuestions("questions");
   }, []);
@@ -36,7 +46,11 @@ export const HomePage = () => {
 
       {isLoading && <Loader />}
       {error && <p>{error}</p>}
-      <QuestionCardList questions={questions} />
+      {filteredQuestions.length === 0 && (
+        <p className={cls.noQuestionsFound}>No questions found...</p>
+      )}
+
+      <QuestionCardList questions={filteredQuestions} />
     </>
   );
 };

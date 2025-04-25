@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "json-server --watch db.json -p 8800",
+    "server:help": "json-server --help"
   },
   "dependencies": {
     "react": "^19.0.0",

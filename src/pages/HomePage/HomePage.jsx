@@ -13,9 +13,11 @@ import { SearchInput } from "../../components/SearchInput/SearchInput";
 export const HomePage = () => {
   const [questions, setQuestions] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [sortSelectValue, setSortSelectValue] = useState("");
 
   const [getQuestions, isLoading, error] = useFetch(async (url) => {
     const { data: questions } = await axios.get(`${API_URL}/${url}`);
+
     setQuestions(questions);
     return questions;
   });
@@ -30,18 +32,37 @@ export const HomePage = () => {
     [questions, searchValue]
   );
 
-  useEffect(() => {
-    getQuestions("questions");
-  }, []);
-
   const onSearchChangeHandler = (e) => {
     setSearchValue(e.target.value);
   };
+
+  const onSortSelectChangeHandler = (e) => {
+    setSortSelectValue(e.target.value);
+  };
+
+  useEffect(() => {
+    getQuestions(`questions?${sortSelectValue}`);
+  }, [sortSelectValue]);
 
   return (
     <>
       <div className={cls.controlsContainer}>
         <SearchInput value={searchValue} onChange={onSearchChangeHandler} />
+
+        <select
+          value={sortSelectValue}
+          onChange={onSortSelectChangeHandler}
+          className={cls.select}
+        >
+          <option value="" disabled>
+            sort by
+          </option>
+
+          <option value="_sort=level">level ASC</option>
+          <option value="_sort=-level">level DESC</option>
+          <option value="_sort=completed">completed ASC</option>
+          <option value="_sort=-completed">completed DESC</option>
+        </select>
       </div>
 
       {isLoading && <Loader />}

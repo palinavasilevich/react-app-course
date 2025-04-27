@@ -1,19 +1,26 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 
+import { useFetch } from "../../hooks/useFetch";
 import { API_URL } from "../../constants";
 import { QuestionCardList } from "../../components/QuestionCardList";
 import { Loader } from "../../components/Loader";
-
-import { useFetch } from "../../hooks/useFetch";
+import { SearchInput } from "../../components/SearchInput/SearchInput";
+import { Button } from "../../components/Button";
 
 import cls from "./HomePage.module.css";
-import { SearchInput } from "../../components/SearchInput/SearchInput";
+
+const DEFAULT_PER_PAGE = 10;
 
 export const HomePage = () => {
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState({});
+  const [searchParams, setSearchParams] = useState(
+    `_page=1&_per_page=${DEFAULT_PER_PAGE}`
+  );
   const [searchValue, setSearchValue] = useState("");
   const [sortSelectValue, setSortSelectValue] = useState("");
+
+  const controlsContainerRef = useRef();
 
   const [getQuestions, isLoading, error] = useFetch(async (url) => {
     const { data: questions } = await axios.get(`${API_URL}/${url}`);
@@ -22,15 +29,31 @@ export const HomePage = () => {
     return questions;
   });
 
-  const filteredQuestions = useMemo(
-    () =>
-      questions.filter((question) =>
-        question.question
-          .toLowerCase()
-          .includes(searchValue.trim().toLocaleLowerCase())
-      ),
-    [questions, searchValue]
-  );
+  const filteredQuestions = useMemo(() => {
+    if (questions?.data) {
+      if (searchValue.trim()) {
+        return questions.data.filter((item) =>
+          item.question
+            .toLowerCase()
+            .includes(searchValue.trim().toLocaleLowerCase())
+        );
+      } else {
+        return questions.data;
+      }
+    }
+    return [];
+  }, [questions, searchValue]);
+
+  const pagination = useMemo(() => {
+    const totalQuestionsCount = questions?.pages || 0;
+
+    return Array(totalQuestionsCount)
+      .fill(0)
+      .map((_, index) => index + 1);
+  }, [questions]);
+
+  const getActivePageNumber = () =>
+    questions.next === null ? questions.last : questions.next - 1;
 
   const onSearchChangeHandler = (e) => {
     setSearchValue(e.target.value);
@@ -38,15 +61,27 @@ export const HomePage = () => {
 
   const onSortSelectChangeHandler = (e) => {
     setSortSelectValue(e.target.value);
+
+    setSearchParams(`_page=1&_per_page=${DEFAULT_PER_PAGE}&${e.target.value}`);
+  };
+
+  const paginationHandler = (e) => {
+    if (e.target.tagName === "BUTTON") {
+      setSearchParams(
+        `_page=${e.target.textContent}&_per_page=${DEFAULT_PER_PAGE}&${sortSelectValue}`
+      );
+
+      controlsContainerRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
-    getQuestions(`questions?${sortSelectValue}`);
-  }, [sortSelectValue]);
+    getQuestions(`questions?${searchParams}`);
+  }, [searchParams]);
 
   return (
     <>
-      <div className={cls.controlsContainer}>
+      <div className={cls.controlsContainer} ref={controlsContainerRef}>
         <SearchInput value={searchValue} onChange={onSearchChangeHandler} />
 
         <select
@@ -67,11 +102,22 @@ export const HomePage = () => {
 
       {isLoading && <Loader />}
       {error && <p>{error}</p>}
-      {filteredQuestions.length === 0 && (
-        <p className={cls.noQuestionsFound}>No questions found...</p>
-      )}
 
       <QuestionCardList questions={filteredQuestions} />
+
+      {filteredQuestions.length === 0 ? (
+        <p className={cls.noQuestionsFound}>No questions found...</p>
+      ) : (
+        <div className={cls.paginationContainer} onClick={paginationHandler}>
+          {pagination.map((value) => {
+            return (
+              <Button key={value} isActive={value === getActivePageNumber()}>
+                {value}
+              </Button>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 };

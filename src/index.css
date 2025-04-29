@@ -7,6 +7,8 @@
 
   --card-bg-color: #343a46;
 
+  --green-color: #219679;
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -45,6 +47,8 @@ a {
     --btn-text-color: #fff;
 
     --card-bg-color: #ebedf0;
+
+    --green-color: #219679;
   }
 }
 
@@ -57,5 +61,7 @@ a {
     --btn-text-color: #57c4dc;
 
     --card-bg-color: #343a46;
+
+    --green-color: #219679;
   }
 }

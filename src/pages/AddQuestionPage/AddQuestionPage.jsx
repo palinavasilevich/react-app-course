@@ -34,6 +34,7 @@ const createQuestionAction = async (_prevState, formData) => {
   } catch (error) {
     console.error(error.message);
     toast.error(error.message);
+    return {};
   }
 };
 
@@ -96,7 +97,6 @@ export const AddQuestionPage = () => {
               id="resourcesField"
               cols="30"
               rows="5"
-              required
               placeholder="Please enter resources separated by commas"
             ></textarea>
           </div>

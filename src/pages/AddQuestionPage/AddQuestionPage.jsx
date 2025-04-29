@@ -38,7 +38,7 @@ const createQuestionAction = async (_prevState, formData) => {
   }
 };
 
-export const AddQuestionPage = () => {
+const AddQuestionPage = () => {
   const [formState, formAction, isLoading] = useActionState(
     createQuestionAction,
     { clearForm: true }
@@ -130,3 +130,5 @@ export const AddQuestionPage = () => {
     </>
   );
 };
+
+export default AddQuestionPage;

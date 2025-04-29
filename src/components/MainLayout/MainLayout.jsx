@@ -1,7 +1,11 @@
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import cls from "./MainLayout.module.css";
-import { Header } from "../Header";
 import { ToastContainer } from "react-toastify";
+
+import { Header } from "../Header";
+import { Loader } from "../Loader";
+
+import cls from "./MainLayout.module.css";
 
 export const MainLayout = () => {
   const currentYear = new Date().getFullYear();
@@ -11,7 +15,9 @@ export const MainLayout = () => {
         <Header />
         <div className={cls.mainWrapper}>
           <main className={cls.main}>
-            <Outlet />
+            <Suspense fallback={<Loader />}>
+              <Outlet />
+            </Suspense>
           </main>
           <footer className={cls.footer}>
             React Quiz Application | {currentYear} <br />

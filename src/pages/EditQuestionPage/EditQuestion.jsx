@@ -10,6 +10,7 @@ import { delayFn } from "../../helpers/delayFn";
 import { API_URL } from "../../constants";
 
 import cls from "./EditQuestionPage.module.css";
+import { dateFormat } from "../../helpers/dateFormat";
 
 const editQuestionAction = async (_prevState, formData) => {
   try {
@@ -30,7 +31,7 @@ const editQuestionAction = async (_prevState, formData) => {
         resources: resources.length ? resources.split(",") : [],
         level: Number(editedQuestion.level),
         completed: false,
-        editDate: undefined,
+        editDate: dateFormat(new Date()),
       }
     );
 

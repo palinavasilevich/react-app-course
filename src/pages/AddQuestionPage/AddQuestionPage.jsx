@@ -45,7 +45,7 @@ export const AddQuestionPage = () => {
 
   return (
     <>
-      {/* {isLoading && <Loader />} */}
+      {isLoading && <Loader />}
       <h1 className={cls.title}>Add new question</h1>
       <div className={cls.formContainer}>
         <form action={formAction} className={cls.form}>

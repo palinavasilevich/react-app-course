@@ -1,11 +1,23 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "../Button";
+
+import { useAuth } from "../../hooks/useAuth";
+import { storage } from "../../helpers/storage";
+import { AUTH_STORAGE } from "../../constants";
+
 import ReactLogo from "../../assets/react.svg";
 
-import { useNavigate } from "react-router-dom";
 import cls from "./Header.module.css";
 
 export const Header = () => {
   const navigate = useNavigate();
+
+  const { isAuth, setIsAuth } = useAuth();
+
+  const onLoginHandler = () => {
+    storage.setItem(AUTH_STORAGE, !isAuth);
+    setIsAuth(!isAuth);
+  };
 
   return (
     <header className={cls.header}>
@@ -14,8 +26,13 @@ export const Header = () => {
         <span>React Quiz App</span>
       </p>
       <div className={cls.headerButtonsContainer}>
-        <Button onClick={() => navigate("/addquestion")}>Add</Button>
-        <Button isDisabled>Login</Button>
+        {isAuth && (
+          <Button onClick={() => navigate("/addquestion")}>Add</Button>
+        )}
+
+        <Button onClick={onLoginHandler} isActive={!isAuth}>
+          {!isAuth ? "Login" : "Logout"}
+        </Button>
       </div>
     </header>
   );

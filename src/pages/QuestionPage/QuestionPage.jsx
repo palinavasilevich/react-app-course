@@ -11,14 +11,16 @@ import { Loader, SmallLoader } from "../../components/Loader";
 import { API_URL } from "../../constants";
 
 import cls from "./QuestionPage.module.css";
+import { useAuth } from "../../hooks/useAuth";
 
 export const QuestionPage = () => {
   const checkboxId = useId();
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [question, setQuestion] = useState(null);
+  const { isAuth } = useAuth();
 
+  const [question, setQuestion] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
 
   const getLevelVariant = () =>
@@ -112,12 +114,14 @@ export const QuestionPage = () => {
             {isUpdateQuestionLoading && <SmallLoader />}
           </label>
 
-          <Button
-            onClick={() => navigate(`/editquestion/${question.id}`)}
-            isDisabled={isUpdateQuestionLoading}
-          >
-            Edit Question
-          </Button>
+          {isAuth && (
+            <Button
+              onClick={() => navigate(`/editquestion/${question.id}`)}
+              isDisabled={isUpdateQuestionLoading}
+            >
+              Edit Question
+            </Button>
+          )}
           <Button
             onClick={() => navigate("/")}
             isDisabled={isUpdateQuestionLoading}

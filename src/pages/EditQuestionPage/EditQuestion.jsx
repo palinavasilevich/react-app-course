@@ -1,4 +1,5 @@
 import { useActionState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -6,11 +7,12 @@ import { QuestionForm } from "../../components/QuestionForm/QuestionForm";
 import { Loader } from "../../components/Loader";
 
 import { delayFn } from "../../helpers/delayFn";
+import { dateFormat } from "../../helpers/dateFormat";
+import { useFetch } from "../../hooks/useFetch";
 
 import { API_URL } from "../../constants";
 
 import cls from "./EditQuestionPage.module.css";
-import { dateFormat } from "../../helpers/dateFormat";
 
 const editQuestionAction = async (_prevState, formData) => {
   try {
@@ -35,7 +37,7 @@ const editQuestionAction = async (_prevState, formData) => {
       }
     );
 
-    toast.success("The question successfully edited!");
+    toast.success("The question has been successfully edited!");
 
     return isClearForm ? {} : question;
   } catch (error) {
@@ -46,7 +48,9 @@ const editQuestionAction = async (_prevState, formData) => {
 };
 
 export const EditQuestion = ({ initialState = {} }) => {
-  const [formState, formAction, isLoading] = useActionState(
+  const navigate = useNavigate();
+
+  const [formState, formAction, isEditQuestionLoading] = useActionState(
     editQuestionAction,
     {
       ...initialState,
@@ -54,15 +58,35 @@ export const EditQuestion = ({ initialState = {} }) => {
     }
   );
 
+  const [removeQuestion, isRemoveQuestionLoading] = useFetch(async () => {
+    await axios.delete(`${API_URL}/questions/${initialState?.id}`);
+
+    toast.success("The question has been successfully deleted!");
+    navigate("/");
+  });
+
+  const onRemoveQuestionHandler = async () => {
+    const isRemove = confirm("Are you sure you want to delete this question?");
+
+    isRemove && removeQuestion();
+  };
+
   return (
     <>
-      {isLoading && <Loader />}
+      {(isEditQuestionLoading || isRemoveQuestionLoading) && <Loader />}
       <h1 className={cls.title}>Edit question</h1>
       <div className={cls.formContainer}>
+        <button
+          className={cls.removeBtn}
+          disabled={isEditQuestionLoading || isRemoveQuestionLoading}
+          onClick={onRemoveQuestionHandler}
+        >
+          X
+        </button>
         <QuestionForm
           formAction={formAction}
           state={formState}
-          isLoading={isLoading}
+          isLoading={isEditQuestionLoading || isRemoveQuestionLoading}
           submitBtnText="Edit question"
         />
       </div>

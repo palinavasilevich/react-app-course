@@ -12,3 +12,25 @@
   box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.1);
   position: relative;
 }
+
+.removeBtn {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  background-color: var(--red-color);
+  font-weight: 7s00;
+  cursor: pointer;
+}
+
+.removeBtn:disabled {
+  opacity: 0.3;
+}

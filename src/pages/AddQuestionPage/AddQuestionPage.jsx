@@ -1,7 +1,6 @@
 import { useActionState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Button } from "../../components/Button";
 
 import { delayFn } from "../../helpers/delayFn";
 import { API_URL } from "../../constants";
@@ -29,7 +28,7 @@ const createQuestionAction = async (_prevState, formData) => {
       editDate: undefined,
     });
 
-    toast.success("New question successfully created!");
+    toast.success("New question was successfully created!");
 
     return isClearForm ? {} : question;
   } catch (error) {

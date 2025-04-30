@@ -8,6 +8,7 @@ import { AUTH_STORAGE } from "../../constants";
 import ReactLogo from "../../assets/react.svg";
 
 import cls from "./Header.module.css";
+import { ThemeToggler } from "../../features/ThemeToggler/ThemeToggler";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ export const Header = () => {
         <span>React Quiz App</span>
       </p>
       <div className={cls.headerButtonsContainer}>
+        <ThemeToggler />
+
         {isAuth && (
           <Button onClick={() => navigate("/addquestion")}>Add</Button>
         )}

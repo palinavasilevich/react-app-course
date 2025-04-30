@@ -39,30 +39,26 @@ a {
   color: inherit;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --main-bg-color: #fff;
-    --text-color: #000;
+body.light {
+  --main-bg-color: #ffffff;
+  --text-color: #000000;
 
-    --btn-bg-color: #383b3f;
-    --btn-text-color: #fff;
+  --btn-bg-color: #383b3f;
+  --btn-text-color: #ffffff;
 
-    --card-bg-color: #ebedf0;
+  --card-bg-color: #ebedf0;
 
-    --green-color: #219679;
-  }
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --main-bg-color: #23272f;
-    --text-color: #fff;
+body.dark {
+  --main-bg-color: #23272f;
+  --text-color: #ffffff;
 
-    --btn-bg-color: #16444f;
-    --btn-text-color: #57c4dc;
+  --btn-bg-color: #16444f;
+  --btn-text-color: #57c4dc;
 
-    --card-bg-color: #343a46;
+  --card-bg-color: #343a46;
 
-    --green-color: #219679;
-  }
+  color-scheme: dark;
 }

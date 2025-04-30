@@ -6,15 +6,16 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
+
 import { MainLayout } from "./components/MainLayout";
 import { HomePage } from "./pages/HomePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
-import { QuestionPage } from "./pages/QuestionPage/QuestionPage";
+import { QuestionPage } from "./pages/QuestionPage";
 import { AddQuestionPageLazy } from "./pages/AddQuestionPage";
-import { EditQuestionPage } from "./pages/EditQuestionPage/EditQuestionPage";
+import { EditQuestionPageLazy } from "./pages/EditQuestionPage";
 import { AuthProvider } from "./auth/AuthProvider";
 import { useAuth } from "./hooks/useAuth";
-import { ForbiddenPage } from "./pages/ForbiddenPage/ForbiddenPage";
+import { ForbiddenPage } from "./pages/ForbiddenPage";
 
 const ProtectedRoutes = () => {
   const { isAuth } = useAuth();
@@ -39,7 +40,10 @@ function App() {
 
             <Route element={<ProtectedRoutes />}>
               <Route path="/addquestion" element={<AddQuestionPageLazy />} />
-              <Route path="/editquestion/:id" element={<EditQuestionPage />} />
+              <Route
+                path="/editquestion/:id"
+                element={<EditQuestionPageLazy />}
+              />
             </Route>
             <Route path="*" element={<NotFoundPage />} />
           </Route>

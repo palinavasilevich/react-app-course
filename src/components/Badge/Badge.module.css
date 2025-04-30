@@ -22,5 +22,5 @@
 }
 
 .alert {
-  background-color: #d84040;
+  background-color: var(--red-color);
 }
